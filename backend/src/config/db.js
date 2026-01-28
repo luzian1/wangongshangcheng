@@ -1,14 +1,14 @@
-require('dotenv').config();
 const { Pool } = require('pg');
+require('dotenv').config();
+
+// 优先使用 Railway 提供的 DATABASE_URL，否则使用本地配置
+const connectionString = process.env.DATABASE_URL || 
+  `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+  connectionString: connectionString,
+  // 在 Railway 上需要 SSL 连接
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
-module.exports = {
-  query: (text, params) => pool.query(text, params),
-};
+module.exports = pool;

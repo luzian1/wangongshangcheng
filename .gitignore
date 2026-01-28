@@ -1,4 +1,9 @@
-"node_modules/" 
-".env" 
-".idea/" 
-"dist/" 
+node_modules/
+.env
+.DS_Store
+*.log
+dist/
+.idea/
+uploads/
+backend/node_modules/
+backend/.env

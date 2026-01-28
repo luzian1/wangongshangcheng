@@ -17,7 +17,13 @@ const PORT = process.env.PORT || 3000;
 // 中间件
 app.use(helmet()); // 安全头部
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Vite默认端口
+  origin: [
+    'http://localhost:5173', 
+    'http://127.0.0.1:5173',
+    process.env.FRONTEND_URL,  // 网页版部署地址
+    'https://webview.weixin.qq.com', // 微信小程序 webview
+    'https://servicewechat.com'      // 微信小程序
+  ].filter(Boolean),
   credentials: true
 })); // 跨域
 app.use((req, res, next) => {
