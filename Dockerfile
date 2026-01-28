@@ -29,6 +29,9 @@ COPY backend/ .
 # 从第一阶段复制构建好的前端文件到正确位置
 COPY --from=frontend-build /app/dist ./frontend/dist
 
+# 设置环境变量
+ENV NODE_ENV=production
+
 EXPOSE $PORT
 
 # 启动应用 - 从backend目录启动
