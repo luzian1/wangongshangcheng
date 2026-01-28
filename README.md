@@ -11,17 +11,27 @@
 ### 2. 部署步骤
 1. 在Railway创建新项目，选择"Deploy from GitHub repo"
 2. 选择您的mall仓库
-3. 添加环境变量：
-   - `JWT_SECRET`: 随机生成的安全密钥
-   - `FRONTEND_URL`: 部署后的URL
-4. 添加PostgreSQL数据库（Railway会自动配置连接）
-5. 点击部署
+3. 部署开始后，点击左侧菜单中的"Settings"
+4. 向下滚动找到"Environment Variables"部分，点击"New Variable"按钮添加以下环境变量：
+   - `JWT_SECRET`: 随机生成的安全密钥（至少32位字符，例如：`mySuperSecretKeyThatIsVeryLongAndRandom123456`）
+   - `FRONTEND_URL`: 部署后的URL（例如：`https://your-project-name-production.up.railway.app`）
+5. 添加PostgreSQL数据库（Railway会自动配置连接）：
+   - 点击左侧菜单中的"New" -> "Database" -> "PostgreSQL"
+   - 选择"Provision"创建数据库
+6. 点击部署
 
 ### 3. 访问应用
 - 网页版：`https://your-project-name-production.up.railway.app`
 - API接口：`https://your-project-name-production.up.railway.app/api/*`
 
-### 4. 微信小程序配置
+### 4. 数据库说明
+- 数据库会在应用首次启动时自动初始化
+- 应用会自动创建所有必需的数据表（用户表、商品表、购物车表、订单表等）
+- 部署到Railway时，应用会使用Railway提供的数据库，而不是本地数据库
+- 本地的 `.env` 文件不会影响部署环境，Railway使用其环境变量
+- 如果部署后数据库仍然为空，可通过Railway终端运行 `npm run init-db` 手动初始化
+
+### 5. 微信小程序配置
 在微信小程序后台配置合法域名：
 - 请求域名：`https://your-project-name-production.up.railway.app`
 

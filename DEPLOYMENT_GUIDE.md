@@ -41,15 +41,22 @@ mall/
 4. 点击 "Deploy Now"
 
 ### 2.3 配置环境变量
-1. 在Railway项目页面，点击 "Settings" -> "Environment Variables"
-2. 添加以下环境变量：
+1. 在Railway项目页面，点击左侧菜单中的 "Settings"（设置）
+2. 在设置页面中，向下滚动找到 "Environment Variables"（环境变量）部分
+3. 点击 "New Variable"（新建变量）按钮
+4. 分别添加以下环境变量：
 
-```
-JWT_SECRET = 随机生成的安全密钥（至少32位字符）
-FRONTEND_URL = https://your-project-name-production.up.railway.app
-```
+**JWT_SECRET**:
+- Key: `JWT_SECRET`
+- Value: 随机生成的安全密钥（至少32位字符，例如：`mySuperSecretKeyThatIsVeryLongAndRandom123456`）
+- 点击 "Add" 或 "Save" 按钮保存
 
-注意：`FRONTEND_URL` 应该替换为您实际的Railway部署URL。
+**FRONTEND_URL**:
+- Key: `FRONTEND_URL`
+- Value: 您的Railway部署URL（例如：`https://your-project-name-production.up.railway.app`）
+- 点击 "Add" 或 "Save" 按钮保存
+
+注意：`FRONTEND_URL` 应该替换为您实际的Railway部署URL。如果您还没有部署URL，可以先使用占位符，部署后再回来修改。
 
 ### 2.4 添加PostgreSQL数据库
 1. 在Railway项目页面，点击 "New" -> "Database" -> "PostgreSQL"
@@ -64,10 +71,26 @@ FRONTEND_URL = https://your-project-name-production.up.railway.app
 3. 确认 `DATABASE_URL` 已经正确设置
 
 ### 3.2 数据库初始化脚本
-如果需要手动初始化数据库，可以通过Railway的Web Terminal执行SQL脚本：
-1. 在Railway项目页面，点击 "Overview"
-2. 点击 "Launch Web Terminal"
-3. 连接到数据库并执行 `backend/src/config/db_init.sql` 中的SQL语句
+数据库会在应用首次启动时自动初始化。当应用启动时，它会自动创建所有必需的数据表（用户表、商品表、购物车表、订单表等）。
+
+关于您提到的两个数据库URL：
+- `DATABASE_URL` (内部URL): `postgresql://postgres:...@postgres.railway.internal:5432/railway` - 这是应用内部访问数据库的URL
+- `DATABASE_PUBLIC_URL` (公共URL): `postgresql://postgres:...@yamabiko.proxy.rlwy.net:34208/railway` - 这是外部访问数据库的URL
+
+您的应用会自动使用内部URL连接数据库，这是正确的配置。应用启动时会自动创建所有必需的表结构。
+
+**重要说明**：
+- 部署到Railway时，应用会使用Railway提供的数据库，而不是您本地的数据库
+- 本地的 `.env` 文件不会影响部署环境，Railway使用其环境变量
+- 数据库表结构定义在 `backend/src/config/db_init.sql` 文件中
+- 应用会自动执行此文件中的SQL语句来创建表
+
+如果部署后数据库仍然为空，您可以：
+1. 检查Railway日志中是否有数据库连接错误
+2. 等待应用完全启动（可能需要几分钟）
+3. 如果仍存在问题，可以通过Railway的终端手动初始化：
+   - 在Railway项目页面，点击左侧菜单中的 "Terminal"（终端）
+   - 运行 `npm run init-db` 命令来手动初始化数据库
 
 ## 4. 访问您的应用
 
@@ -114,13 +137,57 @@ FRONTEND_URL = https://your-project-name-production.up.railway.app
 - **"Connection refused"错误**: 检查数据库连接字符串是否正确
 - **"Permission denied"错误**: 检查文件权限设置
 
+### 6.6 常见问题解答 (FAQ)
+
+**Q: 如何生成JWT_SECRET？**
+A: 您可以使用在线工具生成随机字符串，或者在终端中运行以下命令：
+`node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+（需要Node.js环境）
+
+或者使用在线随机字符串生成器生成至少32位的随机字符串。
+
+**Q: FRONTEND_URL应该填写什么？**
+A: FRONTEND_URL应该是您的Railway部署URL，通常格式为：`https://your-project-name-production.up.railway.app`
+如果您还没有部署，可以先使用占位符，部署后再回来修改。
+
+**Q: 部署后访问网站显示空白页面怎么办？**
+A: 请检查：
+1. 确认环境变量`NODE_ENV`是否设置为`production`
+2. 检查前端是否正确构建
+3. 查看Railway日志中是否有错误信息
+
+**Q: API请求返回404错误怎么办？**
+A: 请确认：
+1. API请求路径是否正确（应以`/api/`开头）
+2. 后端服务是否正常运行
+3. 检查Railway日志中的错误信息
+
+**Q: 如何查看应用日志？**
+A: 在Railway项目页面，点击左侧菜单中的"Logs"即可查看实时日志。
+
+**Q: 如何重新部署？**
+A: 在Railway项目页面，点击"Deployments"标签页，然后点击"Deploy"按钮重新部署最新代码。
+
+**Q: 在Railway界面中找不到某些功能按钮怎么办？**
+A: Railway的界面可能会更新，如果找不到某个功能，请参考以下常见位置：
+- 环境变量设置：左侧菜单 -> "Settings" -> "Environment Variables"
+- 日志查看：左侧菜单 -> "Logs"
+- 终端访问：左侧菜单 -> "Terminal"
+- 部署历史：左侧菜单 -> "Deployments"
+- 数据库管理：左侧菜单 -> 您创建的数据库名称
+- 项目设置：左侧菜单 -> "Settings"
+
 ## 7. 性能优化建议
 
 - 启用Railway的自动休眠功能以节省资源
 - 配置自定义域名以获得更好的用户体验
 - 设置适当的缓存策略以提高性能
 
-## 8. 监控和维护
+## 8. 部署检查清单
+
+请参考项目根目录下的 `CHECKLIST.md` 文件，里面有详细的部署步骤检查清单，帮助您顺利完成部署。
+
+## 9. 监控和维护
 
 - 定期检查应用日志以发现潜在问题
 - 监控数据库性能和连接数
