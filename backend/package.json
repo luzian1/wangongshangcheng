@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "cross-env NODE_ENV=production node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "postinstall": "cd ../frontend && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +22,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "jest": "^30.2.0",

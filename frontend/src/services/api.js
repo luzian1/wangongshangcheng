@@ -1,7 +1,11 @@
 // src/services/api.js
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+// 在生产环境中使用相对路径，这样API请求会发送到同源服务器
+const isProduction = import.meta.env.PROD;
+const API_BASE_URL = isProduction
+  ? '/api'  // 生产环境：使用相对路径，请求同源的API
+  : import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';  // 开发环境
 
 const api = axios.create({
   baseURL: API_BASE_URL,
