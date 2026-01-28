@@ -87,16 +87,32 @@ FRONTEND_URL = https://your-project-name-production.up.railway.app
 - 检查Dockerfile语法是否正确
 - 确认package.json中的依赖项是否正确
 - 查看Railway的部署日志以获取详细错误信息
+- 如果出现Node.js版本兼容性问题，请确保使用支持的版本
+- 检查是否有缺失的文件或目录
 
 ### 6.2 数据库连接失败
 - 确认 `DATABASE_URL` 环境变量已正确设置
 - 检查数据库是否已成功创建并运行
 - 确认SSL配置是否正确
+- 检查数据库连接池配置
 
 ### 6.3 前端页面无法加载
 - 确认前端已正确构建
 - 检查后端是否正确提供了静态文件服务
 - 确认环境变量 `NODE_ENV` 是否设置为 `production`
+- 检查路径配置是否正确
+
+### 6.4 构建错误
+- 如果出现依赖版本冲突，Dockerfile中使用了 `--legacy-peer-deps` 参数来解决
+- 如果仍有问题，请检查package.json中的依赖版本是否兼容
+- 检查Node.js版本是否满足依赖要求
+
+### 6.5 常见错误解决方案
+- **"Cannot find module"错误**: 确保所有依赖都已正确安装
+- **"Module not found"错误**: 检查导入路径是否正确
+- **"Port already in use"错误**: Railway会自动分配端口，确保使用`$PORT`环境变量
+- **"Connection refused"错误**: 检查数据库连接字符串是否正确
+- **"Permission denied"错误**: 检查文件权限设置
 
 ## 7. 性能优化建议
 
