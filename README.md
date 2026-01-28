@@ -29,10 +29,8 @@
 - 应用会自动创建所有必需的数据表（用户表、商品表、购物车表、订单表等）
 - 部署到Railway时，应用会使用Railway提供的数据库，而不是本地数据库
 - 本地的 `.env` 文件不会影响部署环境，Railway使用其环境变量
-- 应用包含重试机制，会在启动时多次尝试连接数据库
 - 如果部署后数据库仍然为空，可通过Railway终端运行 `npm run init-db` 手动初始化
-- 如果出现 "ECONNREFUSED" 或 "DATABASE_URL 环境变量未设置" 错误，请确认数据库连接URL环境变量已正确设置（可能的变量名：DATABASE_URL, RAILWAY_DATABASE_URL, POSTGRES_URL）
-- 如果仍然遇到问题，可在Railway终端中运行 `env | grep -i database` 检查环境变量
+- 如果出现 "ECONNREFUSED" 错误，请确认DATABASE_URL环境变量已正确设置
 
 ### 5. 微信小程序配置
 在微信小程序后台配置合法域名：

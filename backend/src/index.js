@@ -3,11 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
 const fs = require('fs');
-
-// 在生产环境中，我们不使用 dotenv，而是依赖于平台提供的环境变量
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+require('dotenv').config();
 
 // 引入数据库连接池
 const db = require('./config/db');
@@ -233,36 +229,28 @@ async function initializeDatabase() {
 
 // 只有在直接运行此文件时才启动服务器
 if (require.main === module) {
-  // 首先初始化数据库，然后启动服务器
-  initializeDatabase()
-    .then(() => {
-      const server = app.listen(PORT, '0.0.0.0', () => {
-        console.log(`服务器运行在端口 ${PORT}`);
-        console.log(`运行环境: ${process.env.NODE_ENV || 'development'}`);
-        if (process.env.NODE_ENV === 'production') {
-          console.log(`前端服务: 静态文件托管已启用`);
-        }
-      });
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`服务器运行在端口 ${PORT}`);
+    console.log(`运行环境: ${process.env.NODE_ENV || 'development'}`);
+    if (process.env.NODE_ENV === 'production') {
+      console.log(`前端服务: 静态文件托管已启用`);
+    }
+  });
 
-      // 处理关闭信号
-      process.on('SIGTERM', () => {
-        console.log('收到SIGTERM信号，正在关闭服务器...');
-        server.close(() => {
-          console.log('服务器已关闭');
-        });
-      });
-
-      process.on('SIGINT', () => {
-        console.log('收到SIGINT信号，正在关闭服务器...');
-        server.close(() => {
-          console.log('服务器已关闭');
-        });
-      });
-    })
-    .catch((error) => {
-      console.error('应用启动失败:', error);
-      process.exit(1);
+  // 处理关闭信号
+  process.on('SIGTERM', () => {
+    console.log('收到SIGTERM信号，正在关闭服务器...');
+    server.close(() => {
+      console.log('服务器已关闭');
     });
+  });
+
+  process.on('SIGINT', () => {
+    console.log('收到SIGINT信号，正在关闭服务器...');
+    server.close(() => {
+      console.log('服务器已关闭');
+    });
+  });
 }
 
 // 导出app实例以供测试使用和其他用途
