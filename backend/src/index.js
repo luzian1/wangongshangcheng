@@ -3,7 +3,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
 const fs = require('fs');
-require('dotenv').config();
+
+// 在生产环境中，我们不使用 dotenv，而是依赖于平台提供的环境变量
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 // 引入数据库连接池
 const db = require('./config/db');

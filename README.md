@@ -31,7 +31,7 @@
 - 本地的 `.env` 文件不会影响部署环境，Railway使用其环境变量
 - 应用包含重试机制，会在启动时多次尝试连接数据库
 - 如果部署后数据库仍然为空，可通过Railway终端运行 `npm run init-db` 手动初始化
-- 如果出现 "ECONNREFUSED" 错误，请确认DATABASE_URL环境变量已正确设置
+- 如果出现 "ECONNREFUSED" 或 "DATABASE_URL 环境变量未设置" 错误，请确认DATABASE_URL环境变量已正确设置
 
 ### 5. 微信小程序配置
 在微信小程序后台配置合法域名：

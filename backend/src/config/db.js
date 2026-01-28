@@ -1,9 +1,7 @@
 const { Pool } = require('pg');
 
 // 在生产环境中，我们不使用 dotenv，而是依赖于平台提供的环境变量
-if (process.env.NODE_ENV === 'production') {
-  // 在生产环境中，只使用系统环境变量
-} else {
+if (process.env.NODE_ENV !== 'production') {
   // 在开发环境中，加载 .env 文件
   require('dotenv').config();
 }
@@ -12,7 +10,13 @@ if (process.env.NODE_ENV === 'production') {
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
-  console.error('错误：DATABASE_URL 环境变量未设置');
+  if (process.env.NODE_ENV === 'production') {
+    console.error('错误：生产环境中 DATABASE_URL 环境变量未设置');
+    console.error('请在 Railway 中设置 DATABASE_URL 环境变量');
+  } else {
+    console.error('错误：开发环境中 DATABASE_URL 环境变量未设置');
+    console.error('请在 .env 文件中设置 DATABASE_URL');
+  }
   process.exit(1);
 }
 
