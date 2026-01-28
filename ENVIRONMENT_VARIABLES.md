@@ -5,7 +5,7 @@
 在Railway部署时，需要设置以下环境变量：
 
 ### 必需变量
-- `DATABASE_URL` - 数据库连接URL（由Railway自动设置）
+- `DATABASE_URL` / `RAILWAY_DATABASE_URL` / `POSTGRES_URL` - 数据库连接URL（由Railway自动设置，应用会尝试这些变量名，按顺序查找第一个存在的）
 - `JWT_SECRET` - JWT密钥（至少32位随机字符）
 - `FRONTEND_URL` - 前端访问URL（例如：https://your-project-name-production.up.railway.app）
 

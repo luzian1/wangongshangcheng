@@ -51,10 +51,16 @@ A: 部署到Railway后，应用会使用Railway提供的数据库，而不是您
 A: 不会。部署到Railway时，应用使用Railway的环境变量，本地的 `.env` 文件不会被使用。
 
 **Q: 部署时出现 "DATABASE_URL 环境变量未设置" 错误怎么办？**
-A: 这表示应用无法找到DATABASE_URL环境变量，请检查：
+A: 这表示应用无法找到数据库连接URL环境变量，请检查：
 1. 确认已在Railway中添加了PostgreSQL数据库
-2. 确认DATABASE_URL环境变量已自动设置
-3. 检查Railway日志确认数据库已完全启动后再访问应用
+2. 确认数据库已完全启动（可能需要等待几分钟）
+3. 应用现在会尝试以下环境变量名：DATABASE_URL, RAILWAY_DATABASE_URL, POSTGRES_URL
+4. 检查Railway日志确认数据库已完全启动后再访问应用
+5. 如果仍然失败，请在Railway终端中运行以下命令检查环境变量：
+   ```bash
+   env | grep -i database
+   env | grep -i postgres
+   ```
 
 **Q: 部署时出现 "ECONNREFUSED" 数据库连接错误怎么办？**
 A: 这表示应用无法连接到数据库，请检查：

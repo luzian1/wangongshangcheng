@@ -178,11 +178,16 @@ A: Railway的界面可能会更新，如果找不到某个功能，请参考以�
 - 项目设置：左侧菜单 -> "Settings"
 
 **Q: 部署时出现 "DATABASE_URL 环境变量未设置" 错误怎么办？**
-A: 这表示应用无法找到DATABASE_URL环境变量。请检查：
+A: 这表示应用无法找到数据库连接URL环境变量。请检查：
 1. 确认已在Railway中添加了PostgreSQL数据库（通过左侧菜单 -> "New" -> "Database" -> "PostgreSQL"）
-2. 确认DATABASE_URL环境变量已自动设置（Railway会自动为数据库插件设置此变量）
-3. 确认您没有在环境变量中手动覆盖DATABASE_URL
+2. 确认数据库已完全启动（可能需要等待几分钟）
+3. 应用现在会尝试以下环境变量名：DATABASE_URL, RAILWAY_DATABASE_URL, POSTGRES_URL
 4. 检查Railway日志确认数据库已完全启动后再访问应用
+5. 如果仍然失败，请在Railway终端中运行以下命令检查环境变量：
+   ```bash
+   env | grep -i database
+   env | grep -i postgres
+   ```
 
 **Q: 部署时出现数据库连接错误 "ECONNREFUSED" 怎么办？**
 A: 这通常是由于DATABASE_URL环境变量未正确设置或数据库尚未完全启动导致的。请检查：
@@ -204,6 +209,15 @@ A: 这通常是由于DATABASE_URL环境变量未正确设置或数据库尚未�
 ## 9. 环境变量配置
 
 有关环境变量的详细配置说明，请参考项目根目录下的 `ENVIRONMENT_VARIABLES.md` 文件。
+
+### 调试环境变量
+如果遇到环境变量相关问题，可以在Railway终端中运行以下命令来检查：
+```bash
+env | grep -i database
+env | grep -i postgres
+env | grep -i rail
+```
+这将显示所有与数据库相关的环境变量，帮助您确认正确的变量名。
 
 ## 10. 监控和维护
 
