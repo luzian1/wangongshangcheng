@@ -1,0 +1,53 @@
+项目测试文件整理报告
+===================
+
+根据要求，已将项目中的测试代码提取到“测试”文件夹中，并记录了测试运行结果。
+
+单元测试定义：
+单元测试是针对单个函数、方法或类进行测试，要通过自动化测试的代码去进行测试。
+
+集成测试定义：
+集成测试验证多个模块/组件之间的交互、接口、数据传递。也建议大家写测试代码去测试。
+
+已提取的测试文件：
+-----------------
+Backend测试文件：
+- __tests__/authMiddleware.test.js
+- __tests__/db.test.js
+- __tests__/userController.test.js
+- __tests__/integration/productRoutes.test.js
+- __tests__/integration/setup.js
+- __tests__/integration/userRoutes.test.js
+- __tests__/system/basicFlow.test.js
+- __tests__/system/userFlow.test.js
+- __tests__/setup.js
+- add_test_data.js
+- check_db_status.js
+- check_db.js
+- generate_test_token.js
+- test_pay_api.js
+- test_pay_order.js
+- test_product_api2.js
+
+Frontend测试文件：
+- __tests__/useLogin.test.js
+- __tests__/userService.test.js
+- __tests__/userStore.test.js
+
+测试运行结果：
+-------------
+Backend测试结果：
+- 总共运行了7个测试套件，其中5个通过，2个失败
+- 总共运行了46个测试，其中43个通过，3个失败
+- 详细结果请参见 backend_test_results.txt
+
+Frontend测试结果：
+- 前端测试由于配置问题未能成功运行
+- 错误信息：ReferenceError: module is not defined
+- 详细错误信息请参见 frontend_test_results.txt
+
+说明：
+-----
+1. 所有现有的测试文件都已按原目录结构复制到“测试”文件夹中
+2. 运行结果已保存到相应的结果文件中
+3. 前端测试因配置问题无法运行，需要修复jest配置文件

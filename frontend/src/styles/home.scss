@@ -1,0 +1,352 @@
+.banner {
+  text-align: center;
+  padding: 50px 20px;
+  background: linear-gradient(135deg, #74b9ff, #0984e3);
+  color: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.banner h2 {
+  margin: 0 0 15px 0;
+  font-size: 2.2em;
+  font-weight: 600;
+}
+
+.banner p {
+  margin: 0;
+  font-size: 1.2em;
+  opacity: 0.9;
+}
+
+.search-section {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.section-title {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.section-title h3 {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #303133;
+  margin: 0 15px 0 0;
+  padding: 0;
+  display: inline-block;
+}
+
+.product-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 100%;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  border-color: #c6e2ff;
+}
+
+.product-image {
+  text-align: center;
+  overflow: hidden;
+}
+
+.product-image img {
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-name {
+  margin: 0 0 10px 0;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: #303133;
+  height: 45px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-description {
+  color: #909399;
+  font-size: 0.9em;
+  height: 40px;
+  overflow: hidden;
+  margin: 0 0 15px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
+}
+
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.product-price {
+  font-weight: bold;
+  color: #e74c3c;
+  font-size: 1.3em;
+}
+
+.welcome-section {
+  text-align: center;
+}
+
+.welcome-section h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.welcome-section p {
+  color: #666;
+}
+
+.action-card {
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  border-color: #c6e2ff;
+}
+
+.action-content {
+  width: 100%;
+  padding: 15px;
+}
+
+.action-icon {
+  margin-bottom: 15px;
+}
+
+.action-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1.1em;
+  color: #303133;
+}
+
+.action-info p {
+  margin: 0;
+  color: #909399;
+  font-size: 0.9em;
+}
+
+.stat-card {
+  text-align: center;
+  cursor: default;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stat-content {
+  padding: 25px 0;
+}
+
+.stat-title {
+  font-size: 1em;
+  color: #909399;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 2.2em;
+  font-weight: bold;
+  color: #303133;
+  margin-bottom: 5px;
+}
+
+.stat-description {
+  font-size: 0.9em;
+  color: #c0c4cc;
+}
+
+.admin-actions {
+  text-align: center;
+  padding: 30px 0;
+}
+
+.swiper-section {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  padding: 60px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  margin-bottom: 30px;
+}
+
+/* 轮播图样式优化，实现主次分明效果 */
+.swiper-slide {
+  padding: 0 10px;
+  height: 320px !important;
+  width: calc(33.333% - 14px) !important; /* 考虑space-between后的实际宽度 */
+  transform: scale(0.75); /* 默认缩小显示两侧的slide */
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* 使用更平滑的缓动函数 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swiper-slide-active {
+  transform: scale(1); /* 活动slide正常大小 */
+  z-index: 10;
+}
+
+.swiper-slide-next,
+.swiper-slide-prev {
+  transform: scale(0.85); /* 相邻slide稍大一点 */
+}
+
+.swiper-slide-content {
+  width: 100%;
+  height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  /* 使用更平滑的缓动函数 */
+  opacity: 0.8;
+}
+
+.swiper-slide-active .swiper-slide-content {
+  opacity: 1;
+  box-shadow: 0 15px 35px rgba(0,0,0, 0.25);
+  transform: scale(1.05);
+  z-index: 20;
+}
+
+.swiper-slide-prev .swiper-slide-content,
+.swiper-slide-next .swiper-slide-content {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+
+/* 为轮播容器添加更平滑的过渡 */
+.mySwiper {
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.swiper-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.swiper-image:hover {
+  transform: scale(1.05);
+}
+
+.swiper-overlay {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  color: #333;
+  padding: 20px 15px 15px;
+  text-align: left;
+}
+
+.swiper-overlay h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.3em;
+  color: #303133;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.swiper-overlay p {
+  margin: 0 0 12px 0;
+  font-size: 0.95em;
+  color: #606266;
+  height: 45px;
+  overflow: hidden;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.swiper-price {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #e74c3c;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.swiper .swiper-button-next,
+.swiper .swiper-button-prev {
+  color: #409EFF;
+  background: white;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.swiper .swiper-button-next:hover,
+.swiper .swiper-button-prev:hover {
+  background: #409EFF;
+  color: white;
+  transform: scale(1.1);
+}
+
+.swiper .swiper-pagination-bullet-active {
+  background: #409EFF;
+  opacity: 1;
+}
+
+.swiper .swiper-pagination-bullet {
+  background: #c0c4cc;
+  opacity: 1;
+  width: 12px;
+  height: 12px;
+  transition: all 0.3s ease;
+}
+
+.el-divider--horizontal {
+  margin: 15px 0;
+}

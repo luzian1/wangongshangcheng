@@ -1,0 +1,10 @@
+-- 数据库种子文件
+-- 用于初始化基础数据
+
+-- 插入默认管理员用户 (密码需要先哈希)
+-- 注意：实际部署时不应包含默认管理员账户
+-- INSERT INTO users (username, email, password_hash, role) VALUES ('admin', 'admin@example.com', 'hashed_password_here', 'admin');
+
+-- 插入示例商品
+-- INSERT INTO users (username, email, password_hash, role) VALUES ('seller1', 'seller@example.com', 'hashed_password_here', 'seller');
+-- INSERT INTO products (name, description, price, stock_quantity, seller_id) VALUES ('示例商品', '这是一个示例商品', 99.99, 100, 1);

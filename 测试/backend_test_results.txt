@@ -1,0 +1,150 @@
+> luzian-backend@1.0.0 test
+> jest
+
+PASS __tests__/db.test.js
+PASS __tests__/authMiddleware.test.js
+PASS __tests__/userController.test.js
+  鈼 Console
+
+    console.error
+      娉ㄥ唽閿欒: Error: Database error
+          at Object.<anonymous> (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\__tests__\userController.test.js:102:39)
+          at Promise.finally.completed (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:1557:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:1497:10)
+          at _callCircusTest (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:1007:40)
+          at _runTest (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:947:3)
+          at E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:849:7
+          at _runTestsForDescribeBlock (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:862:11)
+          at _runTestsForDescribeBlock (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at _runTestsForDescribeBlock (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:857:11)
+          at run (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:761:3)
+          at runAndTransformResultsToJestFormat (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\jestAdapterInit.js:1918:21)
+          at jestAdapter (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-circus\build\runner.js:101:19)
+          at runTestInternal (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-runner\build\testWorker.js:275:16)
+          at runTest (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-runner\build\testWorker.js:343:7)
+          at Object.worker (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\node_modules\jest-runner\build\testWorker.js:497:12)
+
+      34 |     });
+      35 |   } catch (error) {
+    > 36 |     console.error('娉ㄥ唽閿欒:', error);
+         |             ^
+      37 |     res.status(500).json({ message: '鏈嶅姟鍣ㄩ敊璇' });
+      38 |   }
+      39 | };
+
+      at error (src/controllers/userController.js:36:13)
+      at Object.<anonymous> (__tests__/userController.test.js:104:7)
+
+PASS __tests__/integration/productRoutes.test.js (6.664 s)
+  鈼 Console
+
+    console.log
+      [dotenv@17.2.3] injecting env (1) from .env -- tip: 馃攽 add access controls to secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+PASS __tests__/integration/userRoutes.test.js (6.992 s)
+  鈼 Console
+
+    console.log
+      [dotenv@17.2.3] injecting env (1) from .env -- tip: 馃攽 add access controls to secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+    console.error
+      娉ㄥ唽閿欒: TypeError: Cannot read properties of undefined (reading 'rows')
+          at rows (E:\瀛︿範璧勬枡\杞欢宸ョ▼\浠ｇ爜\mall\backend\src\controllers\userController.js:17:22)
+          at processTicksAndRejections (node:internal/process/task_queues:105:5)
+
+      34 |     });
+      35 |   } catch (error) {
+    > 36 |     console.error('娉ㄥ唽閿欒:', error);
+         |             ^
+      37 |     res.status(500).json({ message: '鏈嶅姟鍣ㄩ敊璇' });
+      38 |   }
+      39 | };
+
+      at error (src/controllers/userController.js:36:13)
+
+FAIL __tests__/system/userFlow.test.js (7.048 s)
+  鈼 Console
+
+    console.log
+      [dotenv@17.2.3] injecting env (1) from .env -- tip: 馃攽 add access controls to secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  鈼 User Flow System Tests 鈥 should complete a basic purchase flow
+
+    expected 201 "Created", got 404 "Not Found"
+
+      189 |         quantity: 2
+      190 |       })
+    > 191 |       .expect(201); // 姝ｇ‘鐨勭姸鎬佺爜鏄201
+          |        ^
+      192 |
+      193 |     expect(response.body.message).toBe('鎴愬姛娣诲姞鍒拌喘鐗╄溅'); // 姝ｇ‘鐨勬秷鎭
+      194 |
+
+      at Object.expect (__tests__/system/userFlow.test.js:191:8)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+  鈼 User Flow System Tests 鈥 should allow admin to manage users
+
+    expect(received).toHaveProperty(path)
+
+    Expected path: "username"
+    Received path: []
+
+    Received value: {"id": 1, "product_id": 1, "quantity": 2, "user_id": 1}
+
+      305 |     expect(response.body.users).toBeDefined();
+      306 |     expect(response.body.users.length).toBeGreaterThan(0);
+    > 307 |     expect(response.body.users[0]).toHaveProperty('username');
+          |                                    ^
+      308 |   });
+      309 | });
+
+      at Object.toHaveProperty (__tests__/system/userFlow.test.js:307:36)
+
+FAIL __tests__/system/basicFlow.test.js (7.166 s)
+  鈼 Console
+
+    console.log
+      [dotenv@17.2.3] injecting env (1) from .env -- tip: 馃攽 add access controls to secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  鈼 Basic System Tests 鈥 should allow buyer to add product to cart
+
+    expected 201 "Created", got 404 "Not Found"
+
+      205 |         quantity: 2
+      206 |       })
+    > 207 |       .expect(201); // 姝ｇ‘鐨勭姸鎬佺爜鏄201
+          |        ^
+      208 |
+      209 |     expect(response.body.message).toBe('鎴愬姛娣诲姞鍒拌喘鐗╄溅'); // 姝ｇ‘鐨勬秷鎭
+      210 |
+
+      at Object.expect (__tests__/system/basicFlow.test.js:207:8)
+      ----
+      at Test._assertStatus (node_modules/supertest/lib/test.js:309:14)
+      at node_modules/supertest/lib/test.js:365:13
+      at Test._assertFunction (node_modules/supertest/lib/test.js:342:13)
+      at Test.assert (node_modules/supertest/lib/test.js:195:23)
+      at localAssert (node_modules/supertest/lib/test.js:138:14)
+      at Server.<anonymous> (node_modules/supertest/lib/test.js:152:11)
+
+Test Suites: 2 failed, 5 passed, 7 total
+Tests:       3 failed, 43 passed, 46 total
+Snapshots:   0 total
+Time:        8.375 s
+Ran all test suites.
