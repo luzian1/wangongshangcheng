@@ -27,8 +27,20 @@ const PORT = process.env.PORT || 3000;
 // 生产环境检测
 const isProduction = process.env.NODE_ENV === 'production';
 
-// 安全中间件
-app.use(helmet());
+// 安全中间件 - 配置CSP以允许必要的连接
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'"], // 允许连接到自身域名
+      frameSrc: ["'self'"],
+      objectSrc: ["'none'"],
+    },
+  },
+}));
 
 // CORS配置 - 生产环境和开发环境不同
 let corsOptions;
