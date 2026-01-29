@@ -7,6 +7,7 @@
     "dev": "nodemon src/index.js",
     "init-db": "node scripts/init-db.js",
     "db-test": "node scripts/db-test.js",
+    "env-check": "node -e \"console.log('NODE_ENV:', process.env.NODE_ENV); console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL); console.log('DATABASE_PUBLIC_URL exists:', !!process.env.DATABASE_PUBLIC_URL); console.log('PGHOST exists:', !!process.env.PGHOST); console.log('PGPORT exists:', !!process.env.PGPORT); console.log('PGDATABASE exists:', !!process.env.PGDATABASE); console.log('PGUSER exists:', !!process.env.PGUSER); console.log('PGPASSWORD exists:', !!process.env.PGPASSWORD);\"",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
