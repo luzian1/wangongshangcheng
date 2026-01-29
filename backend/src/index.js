@@ -5,6 +5,12 @@ const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
 
+// 设置 Railway 环境配置
+if (process.env.NODE_ENV === 'production') {
+  const { setupRailwayConfig } = require('./config/railway-config');
+  setupRailwayConfig();
+}
+
 // 引入数据库连接池
 const db = require('./config/db');
 
@@ -207,7 +213,13 @@ async function initializeDatabase() {
 
   console.log('开始数据库初始化流程...');
   console.log('当前环境:', process.env.NODE_ENV || 'development');
-  console.log('数据库连接字符串存在:', !!process.env.DATABASE_URL);
+  console.log('DATABASE_URL 存在:', !!process.env.DATABASE_URL);
+  console.log('DATABASE_PUBLIC_URL 存在:', !!process.env.DATABASE_PUBLIC_URL);
+  console.log('PGHOST 存在:', !!process.env.PGHOST);
+  console.log('PGPORT 存在:', !!process.env.PGPORT);
+  console.log('PGDATABASE 存在:', !!process.env.PGDATABASE);
+  console.log('PGUSER 存在:', !!process.env.PGUSER);
+  console.log('PGPASSWORD 存在:', !!process.env.PGPASSWORD);
 
   while (retries > 0) {
     try {
@@ -239,7 +251,8 @@ async function initializeDatabase() {
       console.error(`错误详情:`, {
         code: error.code,
         detail: error.detail,
-        hint: error.hint
+        hint: error.hint,
+        stack: error.stack
       });
 
       if (retries === 0) {
