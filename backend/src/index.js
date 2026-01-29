@@ -77,7 +77,11 @@ app.use('/uploads', express.static(uploadDir));
 if (isProduction) {
   // 服务构建后的前端文件
   const frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
+  console.log('检查前端构建目录:', frontendDistPath);
+  console.log('前端构建目录是否存在:', fs.existsSync(frontendDistPath));
+
   if (fs.existsSync(frontendDistPath)) {
+    console.log('正在提供前端静态文件...');
     app.use(express.static(frontendDistPath));
 
     // 处理SPA路由 - 将所有非API请求重定向到index.html
@@ -89,11 +93,28 @@ if (isProduction) {
         res.status(404).json({ message: '接口不存在' });
       } else {
         // 前端路由，返回index.html
+        console.log('发送前端index.html文件');
         res.sendFile(path.join(frontendDistPath, 'index.html'));
       }
     });
   } else {
     console.warn('警告: 前端构建目录不存在，无法提供前端服务');
+    console.warn('前端目录路径:', frontendDistPath);
+
+    // 列出当前目录内容以进行调试
+    const parentDir = path.join(__dirname, '..', '..');
+    try {
+      const dirContents = fs.readdirSync(parentDir);
+      console.log('项目根目录内容:', dirContents);
+
+      const frontendDir = path.join(parentDir, 'frontend');
+      if (fs.existsSync(frontendDir)) {
+        const frontendContents = fs.readdirSync(frontendDir);
+        console.log('frontend目录内容:', frontendContents);
+      }
+    } catch (err) {
+      console.error('无法读取目录内容:', err);
+    }
   }
 }
 
@@ -108,11 +129,13 @@ app.use('/api/upload', uploadRoutes);
 // 基础健康检查路由
 app.get('/', (req, res) => {
   if (isProduction) {
-    // 生产环境下返回前端页面或重定向到前端
+    // 生产环境下返回前端页面
     const frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
     if (fs.existsSync(frontendDistPath)) {
+      console.log('根路径：发送前端index.html文件');
       res.sendFile(path.join(frontendDistPath, 'index.html'));
     } else {
+      console.log('根路径：前端构建目录不存在，返回API消息');
       res.json({ message: '简易在线商城API服务运行中' });
     }
   } else {
