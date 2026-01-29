@@ -17,15 +17,22 @@ async function addSampleData() {
     const adminUser = await db.query('SELECT id FROM users WHERE role = $1 ORDER BY id LIMIT 1', ['admin']);
     const sellerId = adminUser.rows.length > 0 ? adminUser.rows[0].id : 1;
 
-    // 添加示例商品
+    // 添加示例商品（使用Base64格式的占位图片）
     await db.query(`
       INSERT INTO products (name, description, price, stock_quantity, image_url, seller_id, status) VALUES
-      ('iPhone 15 Pro', '最新款苹果手机，性能强劲', 7999.00, 50, '/uploads/iphone15.jpg', $1, 'active'),
-      ('MacBook Air M2', '轻薄便携笔记本电脑', 8999.00, 30, '/uploads/macbook.jpg', $1, 'active'),
-      ('AirPods Pro', '无线降噪耳机', 1999.00, 100, '/uploads/airpods.jpg', $1, 'active'),
-      ('iPad Pro', '专业平板电脑', 6999.00, 25, '/uploads/ipad.jpg', $1, 'active'),
-      ('Apple Watch Series 9', '智能手表', 2999.00, 40, '/uploads/watch.jpg', $1, 'active')
-    `, [sellerId]);
+      ('iPhone 15 Pro', '最新款苹果手机，性能强劲', 7999.00, 50, $1, $2, 'active'),
+      ('MacBook Air M2', '轻薄便携笔记本电脑', 8999.00, 30, $3, $2, 'active'),
+      ('AirPods Pro', '无线降噪耳机', 1999.00, 100, $4, $2, 'active'),
+      ('iPad Pro', '专业平板电脑', 6999.00, 25, $5, $2, 'active'),
+      ('Apple Watch Series 9', '智能手表', 2999.00, 40, $6, $2, 'active')
+    `, [
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Base64透明像素
+      sellerId,
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==',
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
+    ]);
 
     console.log('示例商品添加成功！');
     console.log('- 添加了5个商品');
