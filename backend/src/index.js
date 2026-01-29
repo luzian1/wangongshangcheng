@@ -76,6 +76,17 @@ app.use((req, res, next) => {
   next();
 });
 
+// 中间件：处理前端硬编码的localhost请求
+app.use((req, res, next) => {
+  // 如果请求头中包含localhost引用，重写为当前服务器地址
+  const originalReferer = req.get('Referer');
+  if (originalReferer && originalReferer.includes('localhost')) {
+    // 修改请求头，使其看起来像是来自当前域
+    req.headers.referer = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  }
+  next();
+});
+
 // 解析JSON
 app.use(express.json());
 
