@@ -35,7 +35,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "blob:"],
-      connectSrc: ["'self'"], // 只允许连接到自身域名
+      connectSrc: ["'self'", "blob:", "data:"], // 允许连接到自身域名、blob和data
       frameSrc: ["'self'"],
       objectSrc: ["'none'"],
     },
@@ -45,9 +45,12 @@ app.use(helmet({
 // CORS配置 - 生产环境和开发环境不同
 let corsOptions;
 if (isProduction) {
-  // 生产环境：允许当前部署的前端域名
+  // 生产环境：允许当前请求的来源
   corsOptions = {
-    origin: process.env.FRONTEND_URL || true, // 如果设置了FRONTEND_URL则使用它，否则允许所有来源
+    origin: function(origin, callback) {
+      // 在生产环境中，允许当前请求的来源
+      callback(null, true); // 允许所有来源
+    },
     credentials: true
   };
 } else {
