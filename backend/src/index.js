@@ -76,8 +76,24 @@ app.use('/uploads', express.static(uploadDir));
 // 在生产环境中提供前端静态文件
 if (isProduction) {
   // 服务构建后的前端文件
-  const frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
-  console.log('检查前端构建目录:', frontendDistPath);
+  // 根据Dockerfile，前端构建文件位于 /app/frontend/dist
+  // 但由于运行时环境，我们需要尝试多个可能的路径
+  let frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist'); // 相对于 src/index.js 的路径
+  console.log('检查前端构建目录 (相对路径):', frontendDistPath);
+
+  // 如果相对路径不存在，尝试绝对路径
+  if (!fs.existsSync(frontendDistPath)) {
+    frontendDistPath = '/app/frontend/dist'; // Dockerfile中设定的路径
+    console.log('相对路径不存在，尝试绝对路径:', frontendDistPath);
+  }
+
+  // 如果绝对路径也不存在，尝试当前工作目录
+  if (!fs.existsSync(frontendDistPath)) {
+    frontendDistPath = path.join(process.cwd(), 'frontend', 'dist');
+    console.log('绝对路径不存在，尝试当前工作目录路径:', frontendDistPath);
+  }
+
+  console.log('最终检查前端构建目录:', frontendDistPath);
   console.log('前端构建目录是否存在:', fs.existsSync(frontendDistPath));
 
   if (fs.existsSync(frontendDistPath)) {
@@ -102,15 +118,21 @@ if (isProduction) {
     console.warn('前端目录路径:', frontendDistPath);
 
     // 列出当前目录内容以进行调试
-    const parentDir = path.join(__dirname, '..', '..');
+    const parentDir = process.cwd(); // 当前工作目录
     try {
       const dirContents = fs.readdirSync(parentDir);
-      console.log('项目根目录内容:', dirContents);
+      console.log('当前工作目录内容:', dirContents);
 
-      const frontendDir = path.join(parentDir, 'frontend');
-      if (fs.existsSync(frontendDir)) {
-        const frontendContents = fs.readdirSync(frontendDir);
-        console.log('frontend目录内容:', frontendContents);
+      // 检查 /app 目录
+      if (fs.existsSync('/app')) {
+        const appDirContents = fs.readdirSync('/app');
+        console.log('/app 目录内容:', appDirContents);
+
+        const appFrontendDir = path.join('/app', 'frontend', 'dist');
+        if (fs.existsSync(appFrontendDir)) {
+          const appFrontendContents = fs.readdirSync(appFrontendDir);
+          console.log('/app/frontend/dist 目录内容:', appFrontendContents);
+        }
       }
     } catch (err) {
       console.error('无法读取目录内容:', err);
@@ -130,7 +152,17 @@ app.use('/api/upload', uploadRoutes);
 app.get('/', (req, res) => {
   if (isProduction) {
     // 生产环境下返回前端页面
-    const frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
+    // 尝试多个可能的路径
+    let frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
+
+    if (!fs.existsSync(frontendDistPath)) {
+      frontendDistPath = '/app/frontend/dist';
+    }
+
+    if (!fs.existsSync(frontendDistPath)) {
+      frontendDistPath = path.join(process.cwd(), 'frontend', 'dist');
+    }
+
     if (fs.existsSync(frontendDistPath)) {
       console.log('根路径：发送前端index.html文件');
       res.sendFile(path.join(frontendDistPath, 'index.html'));

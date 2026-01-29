@@ -1,0 +1,54 @@
+# 忽略Git相关文件
+.git/
+.gitignore
+
+# 忽略IDE相关文件
+.idea/
+.vscode/
+
+# 忽略测试相关
+测试/
+**/__tests__/
+**/test/
+**/*.test.js
+**/*.spec.js
+
+# 忽略文档
+*.md
+*.txt
+*.doc
+*.pdf
+
+# 忽略环境变量示例
+.env.example
+
+# 忽略shell脚本（除了部署相关）
+!*.sh
+check-env.sh
+
+# 忽略数据库相关
+database/
+
+# 忽略本地开发相关
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 忽略操作系统相关
+.DS_Store
+Thumbs.db
+
+# 忽略编辑器临时文件
+*~
+*.tmp
+*.bak
+
+# 忽略其他开发相关目录
+docs/
+docker/
+
+# 忽略其他配置文件
+*.yml
+*.yaml
+*.toml
