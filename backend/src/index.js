@@ -330,12 +330,50 @@ async function initializeDatabase() {
   }
 }
 
+// 创建管理员用户函数
+async function createAdminUserIfNotExists() {
+  try {
+    // 检查管理员用户是否已存在
+    const existingAdmin = await db.query(
+      'SELECT * FROM users WHERE username = $1 OR email = $2',
+      ['潘子豪', '111111@qq.com']
+    );
+
+    if (existingAdmin.rows.length > 0) {
+      console.log('管理员用户已存在，跳过创建');
+      return;
+    }
+
+    // 加密密码
+    const bcrypt = require('bcryptjs');
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash('123456', saltRounds);
+
+    // 创建管理员用户
+    const result = await db.query(
+      'INSERT INTO users (username, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email, role',
+      ['潘子豪', '111111@qq.com', hashedPassword, 'admin']
+    );
+
+    console.log('管理员用户创建成功:', result.rows[0]);
+    console.log('用户名: 潘子豪');
+    console.log('邮箱: 111111@qq.com');
+    console.log('密码: 123456');
+  } catch (error) {
+    console.error('创建管理员用户失败:', error);
+    throw error;
+  }
+}
+
 // 只有在直接运行此文件时才启动服务器
 if (require.main === module) {
   // 启动服务器前先初始化数据库
   initializeDatabase()
-    .then(() => {
+    .then(async () => {
       console.log('数据库初始化成功');
+
+      // 创建管理员用户（如果不存在）
+      await createAdminUserIfNotExists();
 
       const server = app.listen(PORT, '0.0.0.0', () => {
         console.log(`服务器运行在端口 ${PORT}`);
