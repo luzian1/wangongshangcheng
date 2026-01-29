@@ -65,10 +65,33 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 // 创建上传目录（如果不存在）
-const uploadDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+let uploadDir = path.join(__dirname, '..', 'uploads');
+
+// 在生产环境中，可能需要使用不同的路径
+if (process.env.NODE_ENV === 'production') {
+  // 尝试使用 /tmp 目录（大多数云平台都支持）
+  uploadDir = '/tmp/uploads';
+
+  // 如果 /tmp 不可用，回退到项目目录
+  try {
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+  } catch (err) {
+    console.warn('无法使用 /tmp/uploads，回退到项目目录:', err.message);
+    uploadDir = path.join(__dirname, '..', 'uploads');
+  }
 }
+
+if (!fs.existsSync(uploadDir)) {
+  try {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  } catch (err) {
+    console.error('无法创建上传目录:', err.message);
+  }
+}
+
+console.log('上传目录:', uploadDir);
 
 // 提供上传文件的静态服务
 app.use('/uploads', express.static(uploadDir));

@@ -6,10 +6,22 @@ const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
+// 动态确定上传目录
+let uploadDestination = 'uploads/';
+if (process.env.NODE_ENV === 'production') {
+  uploadDestination = '/tmp/uploads';
+  // 验证目录是否存在，如果不存在则使用项目目录
+  const fs = require('fs');
+  const pathModule = require('path');
+  if (!fs.existsSync(uploadDestination)) {
+    uploadDestination = pathModule.join(__dirname, '..', '..', 'uploads');
+  }
+}
+
 // 配置multer用于文件上传
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // 指定上传目录
+    cb(null, uploadDestination); // 指定上传目录
   },
   filename: function (req, file, cb) {
     // 生成唯一文件名，防止冲突
