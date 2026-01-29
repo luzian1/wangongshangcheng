@@ -34,6 +34,5 @@ ENV NODE_ENV=production
 
 EXPOSE $PORT
 
-# 启动应用 - 从backend目录启动
-WORKDIR /app/backend
-CMD ["npm", "start"]
+# 启动应用 - 从根目录启动，因为后端代码引用了相对路径到frontend/dist
+CMD ["sh", "-c", "cd /app && npm start"]

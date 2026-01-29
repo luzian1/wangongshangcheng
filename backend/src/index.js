@@ -299,6 +299,18 @@ if (require.main === module) {
     })
     .catch((error) => {
       console.error('数据库初始化失败，应用程序退出:', error);
+
+      // 提供更具体的错误信息
+      if (!process.env.DATABASE_URL && !process.env.DATABASE_PUBLIC_URL) {
+        console.error('\n🔍 检测到数据库连接问题:');
+        console.error('💡 解决方案:');
+        console.error('   1. 登录Railway控制台');
+        console.error('   2. 确认数据库服务和应用服务在同一项目中');
+        console.error('   3. 在应用服务的"Plugins"选项卡中添加数据库服务');
+        console.error('   4. 重新部署应用');
+        console.error('📋 详细步骤请参阅项目根目录的 RAILWAY_SETUP.md 文件');
+      }
+
       process.exit(1);
     });
 }
