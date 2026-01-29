@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <el-col :span="24">
         <div class="banner">
-          <h2 v-if="!userRole || userRole === 'buyer'">欢迎来到简易在线商城</h2>
+          <h2 v-if="!userRole || userRole === 'buyer'">欢迎来到皖工购物网</h2>
           <h2 v-else-if="userRole === 'seller'">欢迎来到商家中心</h2>
           <h2 v-else-if="userRole === 'admin'">欢迎来到管理控制台</h2>
           <p v-if="!userRole || userRole === 'buyer'">发现优质商品，享受便捷购物体验</p>

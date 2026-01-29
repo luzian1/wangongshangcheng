@@ -203,10 +203,10 @@ app.get('/', (req, res) => {
       res.sendFile(path.join(frontendDistPath, 'index.html'));
     } else {
       console.log('根路径：前端构建目录不存在，返回API消息');
-      res.json({ message: '简易在线商城API服务运行中' });
+      res.json({ message: '皖工购物网API服务运行中' });
     }
   } else {
-    res.json({ message: '简易在线商城API服务运行中' });
+    res.json({ message: '皖工购物网API服务运行中' });
   }
 });
 

@@ -1,4 +1,4 @@
-> 简易在线商城@0.0.0 test
+> 皖工购物网@0.0.0 test
 > jest
 
 ReferenceError: module is not defined

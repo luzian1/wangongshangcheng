@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <div class="header-content">
-          <h1 class="logo">简易在线商城</h1>
+          <h1 class="logo">皖工购物网</h1>
           <div class="nav-links">
             <router-link to="/" class="nav-link">首页</router-link>
             <router-link to="/products" class="nav-link">商品</router-link>
@@ -43,7 +43,7 @@
 
       <el-footer>
         <div class="footer-content">
-          <p>© 2025 简易在线商城系统. 保留所有权利.</p>
+          <p>© 2025 皖工购物网系统. 保留所有权利.</p>
         </div>
       </el-footer>
     </el-container>

@@ -1,4 +1,4 @@
-# 简易在线商城 - Railway部署指南
+# 皖工购物网 - Railway部署指南
 
 这是一个全栈电商项目，包含买家、商家和管理员三种角色。前端使用Vue3，后端使用Node.js + Express + PostgreSQL。
 
