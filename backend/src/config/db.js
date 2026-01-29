@@ -1,14 +1,22 @@
 const { Pool } = require('pg');
 require('dotenv').config();
+const { getDatabaseConfig } = require('./db-config');
 
-// 优先使用 Railway 提供的 DATABASE_URL，否则使用本地配置
-const connectionString = process.env.DATABASE_URL ||
-  `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+// 获取数据库配置
+const dbConfig = getDatabaseConfig();
+const pool = new Pool(dbConfig);
 
-const pool = new Pool({
-  connectionString: connectionString,
-  // 在 Railway 上需要 SSL 连接
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+// 添加连接事件监听器以更好地调试连接问题
+pool.on('connect', () => {
+  console.log('数据库连接已建立');
+});
+
+pool.on('error', (err) => {
+  console.error('数据库连接错误:', err);
+});
+
+pool.on('remove', () => {
+  console.log('数据库连接已移除');
 });
 
 module.exports = pool;

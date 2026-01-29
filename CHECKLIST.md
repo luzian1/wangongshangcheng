@@ -63,6 +63,13 @@ A: 这表示应用无法连接到数据库，请检查：
 3. 等待数据库完全启动后再尝试部署
 4. 应用现在包含重试机制，会在启动时多次尝试连接数据库
 
+**Q: 如何调试数据库连接问题？**
+A: 您可以使用以下方法调试数据库连接：
+1. 在Railway终端中运行 `npm run db-test` 来测试数据库连接
+2. 检查DATABASE_URL是否包含正确的协议（postgresql://）
+3. 确认DATABASE_URL中没有多余的空格或特殊字符（如 "postgresq1://" 应为 "postgresql://"）
+4. 查看应用日志中的详细错误信息
+
 ## 访问地址
 - 网页版：`https://your-project-name-production.up.railway.app`
 - API接口：`https://your-project-name-production.up.railway.app/api/*`

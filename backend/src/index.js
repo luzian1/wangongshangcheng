@@ -202,27 +202,54 @@ async function initializeDatabase() {
   `;
 
   // 尝试连接数据库，带重试机制
-  let retries = 5;
+  let retries = 10; // 增加重试次数
+  const retryDelay = 5000; // 增加重试间隔到5秒
+
+  console.log('开始数据库初始化流程...');
+  console.log('当前环境:', process.env.NODE_ENV || 'development');
+  console.log('数据库连接字符串存在:', !!process.env.DATABASE_URL);
+
   while (retries > 0) {
     try {
-      console.log('正在尝试连接数据库...');
-      // 测试数据库连接
-      await db.query('SELECT NOW()');
-      console.log('数据库连接成功');
+      console.log(`正在尝试连接数据库... (剩余重试次数: ${retries})`);
 
-      console.log('正在初始化数据库...');
+      // 测试数据库连接
+      const result = await db.query('SELECT NOW()');
+      console.log('数据库连接成功!', result.rows);
+
+      console.log('正在初始化数据库表结构...');
       await db.query(dbInitSql);
       console.log('数据库初始化完成');
+
+      // 验证表是否创建成功
+      const tablesResult = await db.query(`
+        SELECT table_name
+        FROM information_schema.tables
+        WHERE table_schema = 'public'
+        AND table_name IN ('users', 'products', 'cart', 'orders', 'order_items')
+      `);
+
+      console.log(`成功创建了 ${tablesResult.rowCount} 个表:`,
+        tablesResult.rows.map(row => row.table_name).join(', '));
+
       return; // 成功则退出函数
     } catch (error) {
       retries--;
-      console.error(`数据库连接失败 (剩余重试次数: ${retries}):`, error.message);
+      console.error(`数据库连接失败:`, error.message);
+      console.error(`错误详情:`, {
+        code: error.code,
+        detail: error.detail,
+        hint: error.hint
+      });
+
       if (retries === 0) {
         console.error('数据库初始化失败，超出最大重试次数');
         throw error;
       }
+
+      console.log(`等待 ${retryDelay/1000} 秒后重试...`);
       // 等待一段时间再重试
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
     }
   }
 }
