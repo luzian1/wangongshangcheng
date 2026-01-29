@@ -5,13 +5,16 @@ WORKDIR /app
 
 # 复制前端package文件并安装依赖
 COPY frontend/package*.json ./
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
 # 复制前端源代码
 COPY frontend/ .
 
 # 构建前端应用
 RUN npm run build
+
+# 验证构建结果
+RUN ls -la dist/
 
 # 第二阶段 - 构建后端
 FROM node:20-alpine AS backend-build
@@ -21,13 +24,16 @@ WORKDIR /app
 
 # 复制后端package文件并安装依赖
 COPY backend/package*.json ./
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
 # 复制后端源代码
 COPY backend/ .
 
 # 从第一阶段复制构建好的前端文件到正确位置
 COPY --from=frontend-build /app/dist ./frontend/dist
+
+# 验证前端文件是否正确复制
+RUN ls -la frontend/dist/
 
 # 设置环境变量
 ENV NODE_ENV=production
