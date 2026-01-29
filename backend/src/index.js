@@ -99,20 +99,6 @@ if (isProduction) {
   if (fs.existsSync(frontendDistPath)) {
     console.log('正在提供前端静态文件...');
     app.use(express.static(frontendDistPath));
-
-    // 处理SPA路由 - 将所有非API请求重定向到index.html
-    app.get('*', (req, res) => {
-      if (req.path.startsWith('/api/') ||
-          req.path.startsWith('/uploads/') ||
-          req.path.startsWith('/assets/')) {
-        // API请求或静态资源请求，返回404
-        res.status(404).json({ message: '接口不存在' });
-      } else {
-        // 前端路由，返回index.html
-        console.log('发送前端index.html文件');
-        res.sendFile(path.join(frontendDistPath, 'index.html'));
-      }
-    });
   } else {
     console.warn('警告: 前端构建目录不存在，无法提供前端服务');
     console.warn('前端目录路径:', frontendDistPath);
@@ -174,6 +160,28 @@ app.get('/', (req, res) => {
     res.json({ message: '简易在线商城API服务运行中' });
   }
 });
+
+// 在生产环境中处理SPA路由 - 将所有非API请求重定向到前端index.html
+if (isProduction) {
+  // 尝试多个可能的路径
+  let frontendDistPath = path.join(__dirname, '..', '..', 'frontend', 'dist');
+
+  if (!fs.existsSync(frontendDistPath)) {
+    frontendDistPath = '/app/frontend/dist';
+  }
+
+  if (!fs.existsSync(frontendDistPath)) {
+    frontendDistPath = path.join(process.cwd(), 'frontend', 'dist');
+  }
+
+  if (fs.existsSync(frontendDistPath)) {
+    // 处理SPA路由 - 将所有非API请求重定向到index.html
+    app.get(/^(?!\/api\/|\/uploads\/|\/assets\/).*$/, (req, res) => {
+      console.log('发送前端index.html文件');
+      res.sendFile(path.join(frontendDistPath, 'index.html'));
+    });
+  }
+}
 
 // 404处理
 app.use((req, res) => {
