@@ -5,7 +5,7 @@ WORKDIR /app
 
 # 复制前端package文件并安装依赖
 COPY frontend/package*.json ./
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # 复制前端源代码
 COPY frontend/ .
@@ -24,7 +24,7 @@ WORKDIR /app
 
 # 复制后端package文件并安装依赖
 COPY backend/package*.json ./
-RUN npm ci --legacy-peer-deps
+RUN npm install --legacy-peer-deps
 
 # 复制后端源代码
 COPY backend/ .
