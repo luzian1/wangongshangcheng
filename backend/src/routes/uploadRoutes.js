@@ -6,29 +6,26 @@ const { authenticateToken } = require('../middleware/auth');
 
 const router = express.Router();
 
-// 动态确定上传目录
-let uploadDestination = 'uploads/';
-if (process.env.NODE_ENV === 'production') {
-  uploadDestination = '/tmp/uploads';
-  // 验证目录是否存在，如果不存在则使用项目目录
-  const fs = require('fs');
-  const pathModule = require('path');
-  if (!fs.existsSync(uploadDestination)) {
-    uploadDestination = pathModule.join(__dirname, '..', '..', 'uploads');
-  }
-}
+// 在生产环境中使用内存存储，避免文件系统问题
+const storage = process.env.NODE_ENV === 'production'
+  ? multer.memoryStorage() // 生产环境：使用内存存储
+  : multer.diskStorage({ // 开发环境：使用磁盘存储
+      destination: function (req, file, cb) {
+        let uploadDestination = 'uploads/';
+        const fs = require('fs');
+        const path = require('path');
 
-// 配置multer用于文件上传
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDestination); // 指定上传目录
-  },
-  filename: function (req, file, cb) {
-    // 生成唯一文件名，防止冲突
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+        if (!fs.existsSync(uploadDestination)) {
+          fs.mkdirSync(uploadDestination, { recursive: true });
+        }
+        cb(null, uploadDestination);
+      },
+      filename: function (req, file, cb) {
+        // 生成唯一文件名，防止冲突
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+      }
+    });
 
 // 文件过滤器，只允许图片文件
 const fileFilter = (req, file, cb) => {

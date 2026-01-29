@@ -35,7 +35,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "blob:"],
-      connectSrc: ["'self'"], // 允许连接到自身域名
+      connectSrc: ["'self'"], // 只允许连接到自身域名
       frameSrc: ["'self'"],
       objectSrc: ["'none'"],
     },
@@ -45,9 +45,31 @@ app.use(helmet({
 // CORS配置 - 生产环境和开发环境不同
 let corsOptions;
 if (isProduction) {
-  // 生产环境：只允许部署的前端域名
+  // 生产环境：允许当前请求来源和部署的前端域名
   corsOptions = {
-    origin: process.env.FRONTEND_URL || '*', // 部署时设置实际的前端URL
+    origin: function(origin, callback) {
+      // 允许同源请求（没有origin的情况）
+      if (!origin) return callback(null, true);
+
+      // 允许当前请求的来源
+      const currentOrigin = `${req.protocol}://${req.get('host')}`;
+      if (origin === currentOrigin) {
+        return callback(null, true);
+      }
+
+      // 允许在环境变量中设置的前端URL
+      if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) {
+        return callback(null, true);
+      }
+
+      // 允许通配符（在生产环境中谨慎使用）
+      if (process.env.FRONTEND_URL === '*') {
+        return callback(null, true);
+      }
+
+      // 否则拒绝
+      callback(new Error('Not allowed by CORS'));
+    },
     credentials: true
   };
 } else {
