@@ -229,28 +229,38 @@ async function initializeDatabase() {
 
 // 只有在直接运行此文件时才启动服务器
 if (require.main === module) {
-  const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`服务器运行在端口 ${PORT}`);
-    console.log(`运行环境: ${process.env.NODE_ENV || 'development'}`);
-    if (process.env.NODE_ENV === 'production') {
-      console.log(`前端服务: 静态文件托管已启用`);
-    }
-  });
+  // 启动服务器前先初始化数据库
+  initializeDatabase()
+    .then(() => {
+      console.log('数据库初始化成功');
 
-  // 处理关闭信号
-  process.on('SIGTERM', () => {
-    console.log('收到SIGTERM信号，正在关闭服务器...');
-    server.close(() => {
-      console.log('服务器已关闭');
-    });
-  });
+      const server = app.listen(PORT, '0.0.0.0', () => {
+        console.log(`服务器运行在端口 ${PORT}`);
+        console.log(`运行环境: ${process.env.NODE_ENV || 'development'}`);
+        if (process.env.NODE_ENV === 'production') {
+          console.log(`前端服务: 静态文件托管已启用`);
+        }
+      });
 
-  process.on('SIGINT', () => {
-    console.log('收到SIGINT信号，正在关闭服务器...');
-    server.close(() => {
-      console.log('服务器已关闭');
+      // 处理关闭信号
+      process.on('SIGTERM', () => {
+        console.log('收到SIGTERM信号，正在关闭服务器...');
+        server.close(() => {
+          console.log('服务器已关闭');
+        });
+      });
+
+      process.on('SIGINT', () => {
+        console.log('收到SIGINT信号，正在关闭服务器...');
+        server.close(() => {
+          console.log('服务器已关闭');
+        });
+      });
+    })
+    .catch((error) => {
+      console.error('数据库初始化失败，应用程序退出:', error);
+      process.exit(1);
     });
-  });
 }
 
 // 导出app实例以供测试使用和其他用途
